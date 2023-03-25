@@ -1,0 +1,7 @@
+
+.vscode
+bin
+
+*.out
+*.o
+obsolete*.c
