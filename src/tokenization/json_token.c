@@ -6,7 +6,7 @@
 #include "json_token.h"
 #include "errors.h"
 
-#define input_length_percentage 20;
+#define input_length_percentage 90
 
 // tokens
 #define OBJECT_START_CHARATER '{'
@@ -39,12 +39,6 @@ json_token_t *tokenize(char *input)
     // If this token_array_len won't be sufficent then will reallocate more.
     tokens_array_len = forcast_token_number(strlen(input));
 
-    curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
-    curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
-    curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
-    curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
-    curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
-
     // Allocating memory to store tokens
     tokens = (json_token_t *)malloc(sizeof(json_token_t) * tokens_array_len);
 
@@ -63,7 +57,7 @@ json_token_t *tokenize(char *input)
             case OBJECT_START_CHARATER:
                 next_state = TOKEN_STATE_KEY;
                 curr_container = CONTAINER_OBJECT;
-                // curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
+                curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_BEGIN, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
@@ -71,7 +65,7 @@ json_token_t *tokenize(char *input)
             case ARRAY_OPEN_CHARATER:
                 next_state = TOKEN_STATE_VALUE;
                 curr_container = CONTAINER_ARRAY;
-                // curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
+                curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_START, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
@@ -100,6 +94,7 @@ json_token_t *tokenize(char *input)
             break;
 
         case TOKEN_STATE_KEY_END:
+            printf("colon \n");
             if (*input_pos != COLON_CHARATER)
             {
                 return invalid_json_error();
@@ -115,14 +110,14 @@ json_token_t *tokenize(char *input)
             case OBJECT_START_CHARATER:
                 next_state = TOKEN_STATE_KEY;
                 curr_container = CONTAINER_OBJECT;
-                // curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
+                curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_BEGIN, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
             case ARRAY_OPEN_CHARATER:
                 next_state = TOKEN_STATE_VALUE;
                 curr_container = CONTAINER_ARRAY;
-                // curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
+                curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_START, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
@@ -145,49 +140,51 @@ json_token_t *tokenize(char *input)
             default:
                 break;
             }
+            break;
 
-            // case TOKEN_STATE_VALUE_END:
-            //     switch (*input_pos)
-            //     {
-            //     case COMMA_CHARATER:
-            //         if (curr_container == CONTAINER_OBJECT)
-            //         {
-            //             next_state = TOKEN_STATE_KEY;
-            //         }
-            //         else if (curr_container == CONTAINER_ARRAY)
-            //         {
-            //             next_state = TOKEN_STATE_VALUE;
-            //         }
-            //         else
-            //         {
-            //             // this won't means json is incorrect. it may means something is wrong with the code
-            //             return invalid_json_error();
-            //         }
-            //         tokens[curr_array_pos] = new_token(TOKEN_TYPE_COMMA, input_pos, input_pos + 1);
-            //         curr_array_pos++;
-            //         break;
+        case TOKEN_STATE_VALUE_END:
+            switch (*input_pos)
+            {
+            case COMMA_CHARATER:
+                if (curr_countainer_depth->container == CONTAINER_OBJECT)
+                {
+                    next_state = TOKEN_STATE_KEY;
+                }
+                else if (curr_countainer_depth->container == CONTAINER_ARRAY)
+                {
+                    next_state = TOKEN_STATE_VALUE;
+                }
+                else
+                {
+                    // this won't means json is incorrect. it may means something is wrong with the code
+                    return invalid_json_error();
+                }
+                tokens[curr_array_pos] = new_token(TOKEN_TYPE_COMMA, input_pos, input_pos + 1);
+                curr_array_pos++;
+                break;
 
-            //     case ARRAY_END_CHARATER:
-            //         next_state = TOKEN_STATE_END;
-            //         break;
+            case ARRAY_END_CHARATER:
+                next_state = TOKEN_STATE_VALUE_END;
+                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
+                break;
 
-            //     case OBJECT_END_CHARATER:
-            //         next_state = TOKEN_STATE_END;
-            //         break;
+            case OBJECT_END_CHARATER:
+                next_state = TOKEN_STATE_VALUE_END;
+                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
+                break;
 
-            //     default:
-            //         break;
-            //         // return invalid_json_error();
-            //     }
+            default:
+                break;
+                // return invalid_json_error();
+            }
 
         default:
             break;
         }
-
         input_pos++;
     }
-    print_container_depth(curr_countainer_depth);
-    print_tokens(tokens, curr_array_pos);
+    // print_container_depth(curr_countainer_depth); // not working bcz it is null
+    // print_tokens(tokens, curr_array_pos);
     return tokens;
 }
 
@@ -200,7 +197,7 @@ json_token_t new_token(token_type_t token_type, char *start_ptr, char *end_ptr)
 int forcast_token_number(int input_length)
 {
     // will use input_length_percentage here!!
-    return (20 / input_length) * 100;
+    return (input_length_percentage * 100) / input_length;
 }
 
 void skip_whitespace(char *input)
@@ -268,6 +265,13 @@ container_depth_t *get_new_container_depth(container_t container, container_dept
     new_container_depth->container = container;
     new_container_depth->parent = parent;
     return new_container_depth;
+}
+
+container_depth_t *get_container_depth_parent(container_depth_t *container_depth)
+{
+    container_depth_t *parent = container_depth->parent;
+    free(container_depth);
+    return parent;
 }
 
 void print_container_depth(container_depth_t *container_depth)

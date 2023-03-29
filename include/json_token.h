@@ -64,6 +64,7 @@ int invalid_json_error();
 int get_string_length(char *input);
 void print_string_from_input(char *input, int string_len);
 container_depth_t *get_new_container_depth(container_t container, container_depth_t *parent);
+container_depth_t *get_container_depth_parent(container_depth_t *container_depth);
 void print_container_depth(container_depth_t *container_depth);
 
 // // json_token *tokenize_json_string(char *input);
