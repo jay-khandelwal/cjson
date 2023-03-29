@@ -28,15 +28,10 @@ typedef enum token_type_t
 typedef enum token_state_t
 {
     TOKEN_STATE_START,
-    TOKEN_STATE_OBJECT_START,
-    TOKEN_STATE_OBJECT_END,
-    TOKEN_STATE_ARRAY_START,
-    TOKEN_STATE_ARRAY_END,
-    TOKEN_STATE_COLON,
-    TOKEN_STATE_COMMA,
     TOKEN_STATE_KEY,
+    TOKEN_STATE_KEY_END,
     TOKEN_STATE_VALUE,
-    TOKEN_STATE_NUMBER,
+    TOKEN_STATE_VALUE_END,
     TOKEN_STATE_END,
 } token_state_t;
 
@@ -45,6 +40,13 @@ typedef enum container_t
     CONTAINER_OBJECT,
     CONTAINER_ARRAY
 } container_t;
+
+typedef struct container_depth_t
+{
+    int depth;
+    container_t container;
+    struct container_depth_t *parent;
+} container_depth_t;
 
 typedef struct json_token_t
 {
@@ -61,6 +63,8 @@ void print_tokens(json_token_t *tokens, int token_no);
 int invalid_json_error();
 int get_string_length(char *input);
 void print_string_from_input(char *input, int string_len);
+container_depth_t *get_new_container_depth(container_t container, container_depth_t *parent);
+void print_container_depth(container_depth_t *container_depth);
 
 // // json_token *tokenize_json_string(char *input);
 // json_token *json_state_tokenization(char *input);
@@ -80,8 +84,6 @@ void print_string_from_input(char *input, int string_len);
 // //     } value;
 
 // // };
-
-
 
 // typedef enum token_state_t
 // {
@@ -109,7 +111,6 @@ void print_string_from_input(char *input, int string_len);
 //     TOKEN_STATE_END,
 // } token_state_t;
 
-
 // switch(){
 
 //     case TOKEN_STATE_START:
@@ -122,7 +123,7 @@ void print_string_from_input(char *input, int string_len);
 //         case '[':
 //             next_state = TOKEN_STATE_VALUE
 //             break;
-        
+
 //         default:
 //             //raise error
 //             break;
@@ -160,11 +161,11 @@ void print_string_from_input(char *input, int string_len);
 //             // fetch boolean
 //             next_state = TOKEN_STATE_VALUE_END
 //             break;
-        
+
 //         case 'null':
 //             // fetch null
 //             next_state = TOKEN_STATE_VALUE_END
-        
+
 //         default:
 //             // raise error
 //             break;
@@ -215,8 +216,6 @@ void print_string_from_input(char *input, int string_len);
 //         default:
 //             //raise error
 //             break;
-            
 //         }
 //         break;
-    
 // }
