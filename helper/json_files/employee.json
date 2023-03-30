@@ -2,13 +2,16 @@
     "employees": [
       {
         "name": "John Doe",
-        "age": "30",
-        "email": "johndoe@example.com"
+        "age": 30,
+        "email": "johndoe@example.com",
+        "married": true,
+        "city": null
       },
       {
         "name": "Jane Doe",
-        "age": "25",
-        "email": "janedoe@example.com"
+        "age": 25,
+        "email": "janedoe@example.com",
+        "married": false
       }
     ]
   }

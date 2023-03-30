@@ -62,6 +62,8 @@ void skip_whitespace(char *input);
 void print_tokens(json_token_t *tokens, int token_no);
 int invalid_json_error();
 int get_string_length(char *input);
+int get_number_length(char *input);
+int compare_value_from_input(char *input, int counter, char cmp_value[]);
 void print_string_from_input(char *input, int string_len);
 container_depth_t *get_new_container_depth(container_t container, container_depth_t *parent);
 container_depth_t *get_container_depth_parent(container_depth_t *container_depth);

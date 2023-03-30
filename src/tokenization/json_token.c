@@ -6,7 +6,9 @@
 #include "json_token.h"
 #include "errors.h"
 
-#define input_length_percentage 90
+// if it is less it is causing error in enexpcted `curr_countainer_depth` behaviour
+// don't know why
+#define input_length_percentage 1000 // 29//66
 
 // tokens
 #define OBJECT_START_CHARATER '{'
@@ -19,6 +21,13 @@
 #define NULL_START_CHARATER 'n'
 #define COLON_CHARATER ':'
 #define COMMA_CHARATER ','
+
+#define JSON_TRUE_VALUE "true"
+#define JSON_TRUE_VALUE_LEN 4
+#define JSON_FALSE_VALUE "false"
+#define JSON_FALSE_VALUE_LEN 5
+#define JSON_NULL_VALUE "null"
+#define JSON_NULL_VALUE_LEN 4
 
 json_token_t *tokenize(char *input)
 {
@@ -40,10 +49,16 @@ json_token_t *tokenize(char *input)
     tokens_array_len = forcast_token_number(strlen(input));
 
     // Allocating memory to store tokens
-    tokens = (json_token_t *)malloc(sizeof(json_token_t) * tokens_array_len);
+    tokens = (json_token_t *)malloc(sizeof(json_token_t) * 500);
 
     while (*input_pos != '\0')
     {
+        // if (curr_array_pos == tokens_array_len)
+        // {
+        //     printf("ggg \n");
+        //     tokens_array_len += tokens_array_len;
+        //     realloc(tokens, sizeof(json_token_t) * tokens_array_len);
+        // }
         while (isspace(*input_pos))
         {
             input_pos++;
@@ -94,7 +109,6 @@ json_token_t *tokenize(char *input)
             break;
 
         case TOKEN_STATE_KEY_END:
-            printf("colon \n");
             if (*input_pos != COLON_CHARATER)
             {
                 return invalid_json_error();
@@ -121,6 +135,7 @@ json_token_t *tokenize(char *input)
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_START, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
+
             case STRING_START_CHARATER:
                 obj_key_len = get_string_length(input_pos);
 
@@ -131,10 +146,73 @@ json_token_t *tokenize(char *input)
                 }
 
                 debug_print_string_from_input(input_pos, obj_key_len);
+
                 next_state = TOKEN_STATE_VALUE_END;
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_STRING, input_pos, input_pos + obj_key_len);
                 curr_array_pos++;
                 input_pos += obj_key_len - 1;
+                break;
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                obj_key_len = get_number_length(input_pos);
+
+                debug_print_string_from_input(input_pos, obj_key_len);
+
+                next_state = TOKEN_STATE_VALUE_END;
+                tokens[curr_array_pos] = new_token(TOKEN_TYPE_NUMBER, input_pos, input_pos + obj_key_len);
+                curr_array_pos++;
+                input_pos += obj_key_len - 1;
+                break;
+
+            case TRUE_START_CHARATER:
+                if (compare_value_from_input(input_pos, JSON_TRUE_VALUE_LEN, JSON_TRUE_VALUE) == 0)
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                    tokens[curr_array_pos] = new_token(TOKEN_TYPE_TRUE, input_pos, input_pos + JSON_TRUE_VALUE_LEN);
+                    curr_array_pos++;
+                    input_pos += JSON_TRUE_VALUE_LEN - 1;
+                }
+                else
+                {
+                    return invalid_json_error();
+                }
+                break;
+
+            case FALSE_START_CHARATER:
+                if (compare_value_from_input(input_pos, JSON_FALSE_VALUE_LEN, JSON_FALSE_VALUE) == 0)
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                    tokens[curr_array_pos] = new_token(TOKEN_TYPE_FALSE, input_pos, input_pos + JSON_FALSE_VALUE_LEN);
+                    curr_array_pos++;
+                    input_pos += JSON_FALSE_VALUE_LEN - 1;
+                }
+                else
+                {
+                    return invalid_json_error();
+                }
+                break;
+
+            case NULL_START_CHARATER:
+                if (compare_value_from_input(input_pos, JSON_NULL_VALUE_LEN, JSON_NULL_VALUE) == 0)
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                    tokens[curr_array_pos] = new_token(TOKEN_TYPE_NULL, input_pos, input_pos + JSON_NULL_VALUE_LEN);
+                    curr_array_pos++;
+                    input_pos += JSON_NULL_VALUE_LEN - 1;
+                }
+                else
+                {
+                    return invalid_json_error();
+                }
                 break;
 
             default:
@@ -156,33 +234,42 @@ json_token_t *tokenize(char *input)
                 }
                 else
                 {
-                    // this won't means json is incorrect. it may means something is wrong with the code
+                    printf("in else \n");
+                    // this won't always means json is incorrect. it may means something is wrong with the code
                     return invalid_json_error();
                 }
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_COMMA, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
 
-            case ARRAY_END_CHARATER:
-                next_state = TOKEN_STATE_VALUE_END;
-                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
-                break;
-
             case OBJECT_END_CHARATER:
-                next_state = TOKEN_STATE_VALUE_END;
+            case ARRAY_END_CHARATER:
                 curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
+                if (curr_countainer_depth == NULL)
+                {
+                    next_state = TOKEN_STATE_END;
+                }
+                else
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                }
                 break;
 
             default:
-                break;
-                // return invalid_json_error();
+                return invalid_json_error();
             }
+            break;
+
+        case TOKEN_STATE_END:
+            return invalid_json_error();
 
         default:
+            return invalid_json_error();
             break;
         }
         input_pos++;
     }
+    printf("arr curr :- %d \n", curr_array_pos);
     // print_container_depth(curr_countainer_depth); // not working bcz it is null
     // print_tokens(tokens, curr_array_pos);
     return tokens;
@@ -241,6 +328,27 @@ int get_string_length(char *input)
     counter++; // for last `"`
 
     return counter;
+}
+
+int get_number_length(char *input)
+{
+    // counter=1 bcz for `"`
+    int counter = 0;
+
+    for (size_t i = 0; isdigit(input[i]); i++)
+    {
+        counter++;
+    }
+
+    return counter;
+}
+
+int compare_value_from_input(char *input, int counter, char cmp_value[])
+{
+    char input_value[counter + 1];
+    strncpy(input_value, input, counter);
+    input_value[counter] = '\0';
+    return strcmp(input_value, cmp_value);
 }
 
 void print_string_from_input(char *input, int string_len)
