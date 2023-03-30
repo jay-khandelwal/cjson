@@ -8,7 +8,7 @@
 
 // if it is less it is causing error in enexpcted `curr_countainer_depth` behaviour
 // don't know why
-#define input_length_percentage 20 // 29//66
+#define input_length_percentage 20 // 29//66//
 
 // tokens
 #define OBJECT_START_CHARATER '{'
@@ -41,7 +41,6 @@ json_token_t *tokenize(char *input)
     int obj_key_len;
 
     json_token_t *tokens;
-    container_t curr_container;
     container_depth_t *curr_countainer_depth = NULL;
     token_state_t next_state = TOKEN_STATE_START;
 
@@ -71,7 +70,6 @@ json_token_t *tokenize(char *input)
             {
             case OBJECT_START_CHARATER:
                 next_state = TOKEN_STATE_KEY;
-                curr_container = CONTAINER_OBJECT;
                 curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_BEGIN, input_pos, input_pos + 1);
                 curr_array_pos++;
@@ -79,7 +77,6 @@ json_token_t *tokenize(char *input)
 
             case ARRAY_OPEN_CHARATER:
                 next_state = TOKEN_STATE_VALUE;
-                curr_container = CONTAINER_ARRAY;
                 curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_START, input_pos, input_pos + 1);
                 curr_array_pos++;
@@ -123,14 +120,12 @@ json_token_t *tokenize(char *input)
             {
             case OBJECT_START_CHARATER:
                 next_state = TOKEN_STATE_KEY;
-                curr_container = CONTAINER_OBJECT;
                 curr_countainer_depth = get_new_container_depth(CONTAINER_OBJECT, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_BEGIN, input_pos, input_pos + 1);
                 curr_array_pos++;
                 break;
             case ARRAY_OPEN_CHARATER:
                 next_state = TOKEN_STATE_VALUE;
-                curr_container = CONTAINER_ARRAY;
                 curr_countainer_depth = get_new_container_depth(CONTAINER_ARRAY, curr_countainer_depth);
                 tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_START, input_pos, input_pos + 1);
                 curr_array_pos++;
@@ -272,6 +267,7 @@ json_token_t *tokenize(char *input)
     printf("arr curr :- %d \n", curr_array_pos);
     // print_container_depth(curr_countainer_depth); // not working bcz it is null
     // print_tokens(tokens, curr_array_pos);
+    // free(tokens);
     return tokens;
 }
 
