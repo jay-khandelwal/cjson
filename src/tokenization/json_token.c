@@ -8,7 +8,7 @@
 
 // if it is less it is causing error in enexpcted `curr_countainer_depth` behaviour
 // don't know why
-#define input_length_percentage 1000 // 29//66
+#define input_length_percentage 20 // 29//66
 
 // tokens
 #define OBJECT_START_CHARATER '{'
@@ -284,7 +284,7 @@ json_token_t new_token(token_type_t token_type, char *start_ptr, char *end_ptr)
 int forcast_token_number(int input_length)
 {
     // will use input_length_percentage here!!
-    return (input_length_percentage * 100) / input_length;
+    return (input_length_percentage * input_length) / 100;
 }
 
 void skip_whitespace(char *input)
