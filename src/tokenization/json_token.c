@@ -8,7 +8,7 @@
 
 // if it is less it is causing error in enexpcted `curr_countainer_depth` behaviour
 // don't know why
-#define input_length_percentage 20 // 29//66//
+#define input_length_percentage 30 // 29//66
 
 // tokens
 #define OBJECT_START_CHARATER '{'
@@ -48,16 +48,22 @@ json_token_t *tokenize(char *input)
     tokens_array_len = forcast_token_number(strlen(input));
 
     // Allocating memory to store tokens
-    tokens = (json_token_t *)malloc(sizeof(json_token_t) * 500);
+    tokens = (json_token_t *)malloc(sizeof(json_token_t) * tokens_array_len);
+
+    if (tokens==NULL){
+        return NULL;
+    }
 
     while (*input_pos != '\0')
     {
-        // if (curr_array_pos == tokens_array_len)
-        // {
-        //     printf("ggg \n");
-        //     tokens_array_len += tokens_array_len;
-        //     realloc(tokens, sizeof(json_token_t) * tokens_array_len);
-        // }
+        if (curr_array_pos == tokens_array_len-10)
+        {
+            tokens_array_len += tokens_array_len;
+            tokens = realloc(tokens, sizeof(json_token_t) * tokens_array_len);
+            if (tokens==NULL){
+                return NULL;
+            }
+        }
         while (isspace(*input_pos))
         {
             input_pos++;
@@ -264,7 +270,7 @@ json_token_t *tokenize(char *input)
         }
         input_pos++;
     }
-    printf("arr curr :- %d \n", curr_array_pos);
+    // printf("arr curr :- %d \n", curr_array_pos);
     // print_container_depth(curr_countainer_depth); // not working bcz it is null
     // print_tokens(tokens, curr_array_pos);
     // free(tokens);
@@ -358,6 +364,11 @@ void print_string_from_input(char *input, int string_len)
 container_depth_t *get_new_container_depth(container_t container, container_depth_t *parent)
 {
     container_depth_t *new_container_depth = malloc(sizeof(container_depth_t));
+
+    if (new_container_depth==NULL){
+        return NULL;
+    }
+
     if (parent == NULL)
     {
         new_container_depth->depth = 1;

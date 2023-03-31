@@ -17,7 +17,7 @@ $(BINDIR)/myprogram: $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ -g
 
 clean:
 	rm -rf $(OBJDIR)/*.o $(OBJDIR)/**/*.o $(BINDIR)/myprogram
