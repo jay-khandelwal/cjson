@@ -95,9 +95,9 @@ json_token_t *tokenize(char *input)
             break;
 
         case TOKEN_STATE_KEY:
-            obj_key_len = get_string_length(input_pos);
+            obj_key_len = get_string_length(input_pos, 1);
 
-            if (obj_key_len == NULL)
+            if (obj_key_len == -1)
             {
                 debug_printf("Something wrong with the key \n");
                 return invalid_json_error();
@@ -138,9 +138,9 @@ json_token_t *tokenize(char *input)
                 break;
 
             case STRING_START_CHARATER:
-                obj_key_len = get_string_length(input_pos);
+                obj_key_len = get_string_length(input_pos, 0);
 
-                if (obj_key_len == NULL)
+                if (obj_key_len == -1)
                 {
                     debug_printf("Something wrong with the key \n");
                     return invalid_json_error();
@@ -262,6 +262,9 @@ json_token_t *tokenize(char *input)
             break;
 
         case TOKEN_STATE_END:
+            if (*input_pos=='\0'){
+                continue;
+            }
             return invalid_json_error();
 
         default:
@@ -303,18 +306,22 @@ void print_tokens(json_token_t *tokens, int curr_array_pos)
     }
 }
 
-int invalid_json_error()
+void *invalid_json_error()
 {
     errno = -1;
     return NULL;
 }
 
-int get_string_length(char *input)
+
+// `is_key=1` means using for getting key count
+// needed to check if string is not blank
+// because key cannot be blank `""`
+int get_string_length(char *input, int is_key)
 {
 
-    if (*input == *(input + 1))
+    if (is_key && (*input == *(input + 1)))
     {
-        return NULL;
+        return -1;
     }
 
     // counter=1 bcz for `"`
