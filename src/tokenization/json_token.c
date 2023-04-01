@@ -6,11 +6,8 @@
 #include "json_token.h"
 #include "errors.h"
 
-// if it is less it is causing error in enexpcted `curr_countainer_depth` behaviour
-// don't know why
 #define input_length_percentage 30 // 29//66
 
-// tokens
 #define OBJECT_START_CHARATER '{'
 #define OBJECT_END_CHARATER '}'
 #define ARRAY_OPEN_CHARATER '['
@@ -44,23 +41,26 @@ json_token_t *tokenize(char *input)
     container_depth_t *curr_countainer_depth = NULL;
     token_state_t next_state = TOKEN_STATE_START;
 
-    // If this token_array_len won't be sufficent then will reallocate more.
+    /*
+    Allocating some percentage of input length for tokens
+    will reallocate memory in case allocated memory is not sufficent
+    */
     tokens_array_len = forcast_token_number(strlen(input));
-
-    // Allocating memory to store tokens
     tokens = (json_token_t *)malloc(sizeof(json_token_t) * tokens_array_len);
 
-    if (tokens==NULL){
+    if (tokens == NULL)
+    {
         return NULL;
     }
 
     while (*input_pos != '\0')
     {
-        if (curr_array_pos == tokens_array_len-10)
+        if (curr_array_pos == tokens_array_len - 1)
         {
             tokens_array_len += tokens_array_len;
             tokens = realloc(tokens, sizeof(json_token_t) * tokens_array_len);
-            if (tokens==NULL){
+            if (tokens == NULL)
+            {
                 return NULL;
             }
         }
@@ -270,10 +270,8 @@ json_token_t *tokenize(char *input)
         }
         input_pos++;
     }
-    // printf("arr curr :- %d \n", curr_array_pos);
     // print_container_depth(curr_countainer_depth); // not working bcz it is null
     // print_tokens(tokens, curr_array_pos);
-    // free(tokens);
     return tokens;
 }
 
@@ -334,7 +332,6 @@ int get_string_length(char *input)
 
 int get_number_length(char *input)
 {
-    // counter=1 bcz for `"`
     int counter = 0;
 
     for (size_t i = 0; isdigit(input[i]); i++)
@@ -365,7 +362,8 @@ container_depth_t *get_new_container_depth(container_t container, container_dept
 {
     container_depth_t *new_container_depth = malloc(sizeof(container_depth_t));
 
-    if (new_container_depth==NULL){
+    if (new_container_depth == NULL)
+    {
         return NULL;
     }
 
