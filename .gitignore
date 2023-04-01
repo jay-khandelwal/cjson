@@ -4,4 +4,6 @@ bin/*
 
 *.out
 *.o
-obsolete*.c
+obsolete*
+
+big_chunk*.json
