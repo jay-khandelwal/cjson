@@ -89,6 +89,7 @@ json_token_t *tokenize(char *input)
                 break;
 
             default:
+                printf("invalid: 1 \n");
                 return invalid_json_error();
                 break;
             }
@@ -100,6 +101,7 @@ json_token_t *tokenize(char *input)
             if (obj_key_len == -1)
             {
                 debug_printf("Something wrong with the key \n");
+                printf("invalid: 2 \n");
                 return invalid_json_error();
             }
 
@@ -114,6 +116,7 @@ json_token_t *tokenize(char *input)
         case TOKEN_STATE_KEY_END:
             if (*input_pos != COLON_CHARATER)
             {
+                printf("invalid: 3 \n");
                 return invalid_json_error();
             }
             tokens[curr_array_pos] = new_token(TOKEN_TYPE_COLON, input_pos, input_pos + 1);
@@ -137,12 +140,42 @@ json_token_t *tokenize(char *input)
                 curr_array_pos++;
                 break;
 
+            case OBJECT_END_CHARATER:
+                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
+                if (curr_countainer_depth == NULL)
+                {
+                    next_state = TOKEN_STATE_END;
+                }
+                else
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                }
+                tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_END, input_pos, input_pos + 1);
+                curr_array_pos++;
+
+                break;
+
+            case ARRAY_END_CHARATER:
+                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
+                if (curr_countainer_depth == NULL)
+                {
+                    next_state = TOKEN_STATE_END;
+                }
+                else
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                }
+                tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_END, input_pos, input_pos + 1);
+                curr_array_pos++;
+                break;
+
             case STRING_START_CHARATER:
                 obj_key_len = get_string_length(input_pos, 0);
 
                 if (obj_key_len == -1)
                 {
                     debug_printf("Something wrong with the key \n");
+                    printf("invalid: 4 \n");
                     return invalid_json_error();
                 }
 
@@ -184,6 +217,7 @@ json_token_t *tokenize(char *input)
                 }
                 else
                 {
+                    printf("invalid: 5 \n");
                     return invalid_json_error();
                 }
                 break;
@@ -198,6 +232,7 @@ json_token_t *tokenize(char *input)
                 }
                 else
                 {
+                    printf("invalid: 6 \n");
                     return invalid_json_error();
                 }
                 break;
@@ -212,6 +247,7 @@ json_token_t *tokenize(char *input)
                 }
                 else
                 {
+                    printf("invalid: 7 \n");
                     return invalid_json_error();
                 }
                 break;
@@ -236,6 +272,7 @@ json_token_t *tokenize(char *input)
                 else
                 {
                     printf("in else \n");
+                    printf("invalid: 8 \n");
                     // this won't always means json is incorrect. it may means something is wrong with the code
                     return invalid_json_error();
                 }
@@ -244,6 +281,20 @@ json_token_t *tokenize(char *input)
                 break;
 
             case OBJECT_END_CHARATER:
+                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
+                if (curr_countainer_depth == NULL)
+                {
+                    next_state = TOKEN_STATE_END;
+                }
+                else
+                {
+                    next_state = TOKEN_STATE_VALUE_END;
+                }
+                tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_END, input_pos, input_pos + 1);
+                curr_array_pos++;
+
+                break;
+
             case ARRAY_END_CHARATER:
                 curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
                 if (curr_countainer_depth == NULL)
@@ -254,20 +305,26 @@ json_token_t *tokenize(char *input)
                 {
                     next_state = TOKEN_STATE_VALUE_END;
                 }
+                tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_END, input_pos, input_pos + 1);
+                curr_array_pos++;
                 break;
 
             default:
+                printf("invalid: 9 \n");
                 return invalid_json_error();
             }
             break;
 
         case TOKEN_STATE_END:
-            if (*input_pos=='\0'){
+            if (*input_pos == '\0')
+            {
                 continue;
             }
+            printf("invalid: 10 \n");
             return invalid_json_error();
 
         default:
+            printf("invalid: 11 \n");
             return invalid_json_error();
             break;
         }
@@ -312,10 +369,10 @@ void *invalid_json_error()
     return NULL;
 }
 
-
 // `is_key=1` means using for getting key count
 // needed to check if string is not blank
 // because key cannot be blank `""`
+
 int get_string_length(char *input, int is_key)
 {
 
@@ -326,16 +383,52 @@ int get_string_length(char *input, int is_key)
 
     // counter=1 bcz for `"`
     int counter = 1;
+    size_t i = 1;
 
-    for (size_t i = 1; input[i] != '"'; i++)
+    while (input[i]!='\0')
     {
-        counter++;
+        if (input[i]=='"'){
+            if (input[i-1]=='\\' && input[i-2]!='\\'){ 
+                counter++;
+            }
+            else{
+                break;
+            }
+            
+        } else{
+            counter++;
+        }
+        i++;
     }
 
+    // printf("counter is %d \n", counter);
+
     counter++; // for last `"`
+    printf("%d \n", counter);
 
     return counter;
 }
+
+// int get_string_length(char *input, int is_key)
+// {
+
+//     if (is_key && (*input == *(input + 1)))
+//     {
+//         return -1;
+//     }
+
+//     // counter=1 bcz for `"`
+//     int counter = 1;
+
+//     for (size_t i = 1; !(input[i] == '"' && input[i-1]!='\\'); i++)
+//     {
+//         counter++;
+//     }
+
+//     counter++; // for last `"`
+
+//     return counter;
+// }
 
 int get_number_length(char *input)
 {

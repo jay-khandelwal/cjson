@@ -3,7 +3,13 @@
 
 int main()
 {
-    char *buffer = read_file("helper/json_files/quotes.json");
+    char *buffer = read_file("helper/json_files/big_chunk.json");
+
+    // puts(buffer);
+
+    // for (int i=0; buffer[i]!='\0'; i++){
+    //     printf("%c \n", buffer[i]);
+    // }
 
     json_token_t *tokens = tokenize(buffer);
 
@@ -13,7 +19,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    free(buffer);
     free(tokens);
+    free(buffer);
     return 0;
 }
