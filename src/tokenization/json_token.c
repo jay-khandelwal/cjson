@@ -163,21 +163,6 @@ json_token_t *tokenize(char *input)
                 curr_array_pos++;
                 break;
 
-            case OBJECT_END_CHARATER:
-                curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
-                if (curr_countainer_depth == NULL)
-                {
-                    next_state = TOKEN_STATE_END;
-                }
-                else
-                {
-                    next_state = TOKEN_STATE_VALUE_END;
-                }
-                tokens[curr_array_pos] = new_token(TOKEN_TYPE_OBJECT_END, input_pos, input_pos + 1);
-                curr_array_pos++;
-
-                break;
-
             case ARRAY_END_CHARATER:
                 curr_countainer_depth = get_container_depth_parent(curr_countainer_depth);
                 if (curr_countainer_depth == NULL)
