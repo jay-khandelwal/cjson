@@ -7,7 +7,8 @@
         "message": "simpler non-flash version\\",
         "body": "I think find that this feature is not commonly used.\r\n\r\n## more correct notion of \"sanitization\"\r\n\r\nCurrently sanitization olink and I'll start submitting patches.\r\n\r\n\r\n/cc @xuanxu @tenderlove @tardate ",
         "married": true,
-        "city": null
+        "city": null,
+        "prizes": {}
       },
       {
         "name": "Jane Doe",
