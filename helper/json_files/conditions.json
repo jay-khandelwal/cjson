@@ -1,20 +1,20 @@
 {
-    "campaign": "c343b414-563e-4b57-bbee-41d2f0f31c15",
-    "type": "outlet_cov",
-    "conditions": [
-        {
-            "unit": "perc",
-            "value": 12,
-            "comparison": "gte",
-            "deduction_unit": "perc",
-            "deduction_value": 15
-        },
-        {
-            "unit": "perc",
-            "value": 20,
-            "comparison": "gte",
-            "deduction_unit": "perc",
-            "deduction_value": 25
-        }
-    ]
+  "campaign": "c343b414-563e-4b57-bbee-41d2f0f31c15",
+  "type": "outlet_cov",
+  "conditions": [
+    {
+      "unit": "perc",
+      "value": 12,
+      "comparison": "gte",
+      "deduction_unit": "perc",
+      "deduction_value": 15
+    },
+    {
+      "unit": "perc",
+      "value": 20,
+      "comparison": "gte",
+      "deduction_unit": "perc",
+      "deduction_value": 25
+    }
+  ]
 }

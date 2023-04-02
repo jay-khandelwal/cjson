@@ -1,2 +1,2 @@
 # cjson
-A library for parsing &amp; manipulating JSON in c 
+A library for parsing &amp; manipulating JSON in c
