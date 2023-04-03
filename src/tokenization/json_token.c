@@ -326,6 +326,8 @@ json_token_t *tokenize(char *input) {
     }
     input_pos++;
   }
+
+  tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_END, NULL, NULL);
   // print_container_depth(curr_countainer_depth); // not working bcz it is null
   // print_tokens(tokens, curr_array_pos);
   return tokens;

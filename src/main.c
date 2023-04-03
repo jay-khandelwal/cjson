@@ -1,5 +1,8 @@
 #include "json_token.h"
 #include "utils.h"
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int main() {
   char *buffer = read_file("helper/json_files/big_chunk.json");
