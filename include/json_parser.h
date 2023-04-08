@@ -33,5 +33,6 @@ typedef struct json_array_t {
 } json_array_t;
 
 json_element_t *parser(json_token_t *tokens, int tokens_count);
-json_element_t *get_json_values(json_token_t *token,
+json_element_t *get_json_values(json_token_t **token,
                                 json_element_t *parent_element);
+void print_node(json_element_t *node);
