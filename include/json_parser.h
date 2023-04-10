@@ -22,17 +22,18 @@ typedef struct json_property_t {
 
 typedef struct json_object_t {
   size_t length;
-  size_t capacity;
   json_property_t *pairs;
 } json_object_t;
 
 typedef struct json_array_t {
   size_t length;
-  size_t capacity;
-  json_element_t *value;
+  json_element_t **values;
 } json_array_t;
 
 json_element_t *parser(json_token_t *tokens, int tokens_count);
-json_element_t *get_json_values(json_token_t **token,
+json_element_t *get_json_values(json_token_t **token, int tokens_count,
                                 json_element_t *parent_element);
 void print_node(json_element_t *node);
+json_element_t *create_node(json_type node_type, void *node_value,
+                            json_element_t *node_parent);
+json_object_t *create_json_object(json_property_t *properties);

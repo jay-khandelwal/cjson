@@ -1,12 +1,12 @@
-#include "json_parser.h"
-#include "json_token.h"
-#include "utils.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "json_token.h"
+#include "json_parser.h"
+#include "utils.h"
 
 int main() {
-  char *buffer = read_file("helper/json_files/basic.json");
+  char *buffer = read_file("helper/json_files/big_chunk.json");
   int tokens_count;
 
   json_token_t *tokens = tokenize(buffer, &tokens_count);

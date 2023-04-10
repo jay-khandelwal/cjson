@@ -1,10 +1,88 @@
 {
-  "name": "jay",
-  "city": 20,
-  "age": {
-    "dj": "chetas",
-    "new": {
-      "dj": "chetas"
+  "id": "2489669683",
+  "type": "IssueCommentEvent",
+  "actor": {
+    "id": 383775,
+    "login": "Spokane-Dude",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/Spokane-Dude",
+    "avatar_url": "https://avatars.githubusercontent.com/u/383775?"
+  },
+  "repo": {
+    "id": 5397681,
+    "name": "futuretap/FTiCloudSync",
+    "url": "https://api.github.com/repos/futuretap/FTiCloudSync"
+  },
+  "payload": {
+    "action": "created",
+    "issue": {
+      "url": "https://api.github.com/repos/futuretap/FTiCloudSync/issues/5",
+      "labels_url": "https://api.github.com/repos/futuretap/FTiCloudSync/issues/5/labels{/name}",
+      "comments_url": "https://api.github.com/repos/futuretap/FTiCloudSync/issues/5/comments",
+      "events_url": "https://api.github.com/repos/futuretap/FTiCloudSync/issues/5/events",
+      "html_url": "https://github.com/futuretap/FTiCloudSync/issues/5",
+      "id": 53198435,
+      "number": 5,
+      "title": "Build errors in RegexKitLite",
+      "user": {
+        "login": "Spokane-Dude",
+        "id": 383775,
+        "avatar_url": "https://avatars.githubusercontent.com/u/383775?v=3",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Spokane-Dude",
+        "html_url": "https://github.com/Spokane-Dude",
+        "followers_url": "https://api.github.com/users/Spokane-Dude/followers",
+        "following_url": "https://api.github.com/users/Spokane-Dude/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Spokane-Dude/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Spokane-Dude/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Spokane-Dude/subscriptions",
+        "organizations_url": "https://api.github.com/users/Spokane-Dude/orgs",
+        "repos_url": "https://api.github.com/users/Spokane-Dude/repos",
+        "events_url": "https://api.github.com/users/Spokane-Dude/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Spokane-Dude/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "labels": [],
+      "state": "open",
+      "locked": false,
+      "assignee": null,
+      "milestone": null,
+      "comments": 4,
+      "created_at": "2014-12-31T19:05:28Z",
+      "updated_at": "2015-01-01T15:40:24Z",
+      "closed_at": null,
+      "body": "RegexKitLite appears to be for OSX only (according to the RegexKitLite website) and it does not compile  for ARC... I noticed that there is an open issue (#64) on the RegexKitLite SourceForge site, but there has been no response from the author for 2 years!  Is it absolutely necessary for you to use it in FTiCloudSync?"
+    },
+    "comment": {
+      "url": "https://api.github.com/repos/futuretap/FTiCloudSync/issues/comments/68489566",
+      "html_url": "https://github.com/futuretap/FTiCloudSync/issues/5#issuecomment-68489566",
+      "issue_url": "https://api.github.com/repos/futuretap/FTiCloudSync/issues/5",
+      "id": 68489566,
+      "user": {
+        "login": "Spokane-Dude",
+        "id": 383775,
+        "avatar_url": "https://avatars.githubusercontent.com/u/383775?v=3",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Spokane-Dude",
+        "html_url": "https://github.com/Spokane-Dude",
+        "followers_url": "https://api.github.com/users/Spokane-Dude/followers",
+        "following_url": "https://api.github.com/users/Spokane-Dude/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Spokane-Dude/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Spokane-Dude/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Spokane-Dude/subscriptions",
+        "organizations_url": "https://api.github.com/users/Spokane-Dude/orgs",
+        "repos_url": "https://api.github.com/users/Spokane-Dude/repos",
+        "events_url": "https://api.github.com/users/Spokane-Dude/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Spokane-Dude/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "created_at": "2015-01-01T15:40:24Z",
+      "updated_at": "2015-01-01T15:40:24Z",
+      "body": "Hi Orwin... I understand... I fixed it by adding libicucore.dylib to the \nframeworks... at least it builds, but now getting a run-time \nerror:iCloud sync failed.\n\nWhen you get a moment, where do I start looking for why it won't sync?\n\nHappy New Year!\n\nRegards,\nRolf\n\nOrtwin Gentz, FutureTap wrote:\n> I can't look into this right now but you can also install RegexKitLite \n> via CocoaPods.\n>\n> Hope that helps.\n>\n> > Am 01.01.2015 um 10:28 schrieb Spokane-Dude <notifications@github.com>:\n> >\n> > Hi Ortwin... thank you for responding so soon... I did as you said, but\n> > am getting the following errors (just showing a few, most are the \n> same type)\n> >\n> >\n> > Undefined symbols for architecture x86_64:\n> > \"_u_errorName\", referenced from:\n> > _rkl_NSExceptionForRegex in RegexKitLite.o\n> > _rkl_makeNSError in RegexKitLite.o\n> > _rkl_userInfoDictionary in RegexKitLite.o\n> > \"_u_strlen\", referenced from:\n> > _rkl_userInfoDictionary in RegexKitLite.o\n> > \"_uregex_appendReplacement\", referenced from:\n> > _rkl_replaceAll in RegexKitLite.o\n> > \"_uregex_appendTail\", referenced from:\n> > _rkl_replaceAll in RegexKitLite.o\n> > \"_uregex_clone\", referenced from:\n> > -[RKLBlockEnumerationHelper\n> > initWithRegex:options:string:range:error:] in RegexKitLite.o\n> > \"_uregex_close\", referenced from:\n> > _rkl_clearCachedRegex in RegexKitLite.o\n> >\n> > What do I do to fix this?\n> >\n> > Happy New Year!\n> >\n> > Regards,\n> > Rolf\n> > Prager, Phone Apps\n> >\n> > Ortwin Gentz, FutureTap wrote:\n> > > If works on iOS. Just specify -no-objc-arc for RegexKitLite.m to make\n> > > sure it's compiled without ARC.\n> > >\n> > >\n> > > > Am 01.01.2015 um 02:05 schrieb Spokane-Dude \n> <notifications@github.com>:\n> > > >\n> > > > RegexKitLite appears to be for OSX only (according to the\n> > > RegexKitLite website) and it does not appear to be built for ARC...\n> > > any ideas on how to fix this?\n> > > >\n> > > > \\\n> > > > Reply to this email directly or view it on GitHub.\n> > > >\n> > >\n> > > —\n> > > Reply to this email directly or view it on GitHub\n> > > \n> <https://github.com/futuretap/FTiCloudSync/issues/5#issuecomment-68478489>. \n>\n> > >\n> > —\n> > Reply to this email directly or view it on GitHub.\n> >\n>\n> —\n> Reply to this email directly or view it on GitHub \n> <https://github.com/futuretap/FTiCloudSync/issues/5#issuecomment-68482636>.\n>"
     }
-  }
+  },
+  "public": true,
+  "created_at": "2015-01-01T15:40:24Z"
 }

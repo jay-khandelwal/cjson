@@ -1,4 +1,5 @@
 #include "json_token.h"
+#include "utils.h"
 #include "errors.h"
 #include <ctype.h>
 #include <errno.h>
@@ -44,7 +45,9 @@ json_token_t *tokenize(char *input, int *tokens_count) {
   Allocating some percentage of input length for tokens
   will reallocate memory in case allocated memory is not sufficent
   */
-  tokens_array_len = forcast_token_number(strlen(input));
+  tokens_array_len =
+      get_percentage_value(strlen(input), input_length_percentage);
+  // tokens_array_len = forcast_token_number(strlen(input));
   tokens = (json_token_t *)malloc(sizeof(json_token_t) * tokens_array_len);
 
   if (tokens == NULL) {
@@ -327,7 +330,7 @@ json_token_t *tokenize(char *input, int *tokens_count) {
     input_pos++;
   }
 
-  tokens[curr_array_pos] = new_token(TOKEN_TYPE_ARRAY_END, NULL, NULL);
+  tokens[curr_array_pos] = new_token(TOKEN_TYPE_NONE, NULL, NULL);
   // print_container_depth(curr_countainer_depth); // not working bcz it is null
   // print_tokens(tokens, curr_array_pos);
   *tokens_count = curr_array_pos;

@@ -20,3 +20,7 @@ char *read_file(char *file_name) {
   fclose(fptr);
   return buffer;
 }
+
+int get_percentage_value(int value, int percentage) {
+  return (percentage * value) / 100;
+}
