@@ -234,7 +234,7 @@ void print_node(json_element_t *node) {
     break;
 
   case JSON_TYPE_FALSE:
-    printf(" fasle");
+    printf(" false");
     break;
 
   default:

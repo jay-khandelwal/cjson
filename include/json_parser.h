@@ -1,4 +1,3 @@
-
 typedef enum json_type {
   JSON_TYPE_STRING,
   JSON_TYPE_NUMBER,
