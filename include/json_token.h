@@ -12,6 +12,7 @@ typedef enum token_type_t {
   TOKEN_TYPE_NONE,
   TOKEN_TYPE_OBJECT_BEGIN,
   TOKEN_TYPE_OBJECT_END,
+  TOKEN_TYPE_KEY,
   TOKEN_TYPE_ARRAY_START,
   TOKEN_TYPE_ARRAY_END,
   TOKEN_TYPE_STRING,
@@ -47,7 +48,7 @@ typedef struct json_token_t {
   char *end;
 } json_token_t;
 
-json_token_t *tokenize(char *input);
+json_token_t *tokenize(char *input, int *tokens_count);
 json_token_t new_token(token_type_t token_type, char *start_ptr, char *end_ptr);
 int forcast_token_number(int input_length);
 void skip_whitespace(char *input);

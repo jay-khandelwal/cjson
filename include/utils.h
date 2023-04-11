@@ -1,5 +1,2 @@
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 char *read_file(char *filename);
+int get_percentage_value(int value, int percentage);

@@ -1,4 +1,5 @@
 #include "json_token.h"
+#include "utils.h"
 #include "errors.h"
 #include <ctype.h>
 #include <errno.h>
@@ -26,7 +27,7 @@
 #define JSON_NULL_VALUE "null"
 #define JSON_NULL_VALUE_LEN 4
 
-json_token_t *tokenize(char *input) {
+json_token_t *tokenize(char *input, int *tokens_count) {
 #ifdef DEBUG
   debug_printf("Debug message \n");
   char *string_ptr;
@@ -44,7 +45,9 @@ json_token_t *tokenize(char *input) {
   Allocating some percentage of input length for tokens
   will reallocate memory in case allocated memory is not sufficent
   */
-  tokens_array_len = forcast_token_number(strlen(input));
+  tokens_array_len =
+      get_percentage_value(strlen(input), input_length_percentage);
+  // tokens_array_len = forcast_token_number(strlen(input));
   tokens = (json_token_t *)malloc(sizeof(json_token_t) * tokens_array_len);
 
   if (tokens == NULL) {
@@ -120,7 +123,7 @@ json_token_t *tokenize(char *input) {
 
         next_state = TOKEN_STATE_KEY_END;
         tokens[curr_array_pos] =
-            new_token(TOKEN_TYPE_STRING, input_pos,
+            new_token(TOKEN_TYPE_KEY, input_pos,
                       input_pos + obj_key_len); // subtracting `-1` maybe check
         curr_array_pos++;
         input_pos += obj_key_len - 1;
@@ -326,8 +329,11 @@ json_token_t *tokenize(char *input) {
     }
     input_pos++;
   }
+
+  tokens[curr_array_pos] = new_token(TOKEN_TYPE_NONE, NULL, NULL);
   // print_container_depth(curr_countainer_depth); // not working bcz it is null
   // print_tokens(tokens, curr_array_pos);
+  *tokens_count = curr_array_pos;
   return tokens;
 }
 
