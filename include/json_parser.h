@@ -20,7 +20,7 @@ typedef struct json_property_t {
 } json_property_t;
 
 typedef struct json_object_t {
-  size_t length;
+  int length;
   json_property_t *pairs;
 } json_object_t;
 
