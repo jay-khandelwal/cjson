@@ -1,4 +1,5 @@
-// #define DEBUG
+#define DEBUG
+// #define LOG_JSON_DATA
 
 #ifdef DEBUG
 #define debug_printf(...) printf(__VA_ARGS__)
