@@ -83,7 +83,7 @@ json_element_t *get_json_values(json_token_t **tokens, int tokens_count,
         token++;
 
       } else {
-        printf("key else error \n");
+        debug_printf("key else error \n");
         return NULL;
       }
     }
@@ -106,7 +106,8 @@ json_element_t *get_json_values(json_token_t **tokens, int tokens_count,
 
     curr_array = malloc(sizeof(json_array_t) * 1);
     curr_node = create_node(JSON_TYPE_ARRAY, curr_array, parent_element);
-    values = (json_element_t **)malloc(sizeof(json_element_t) * curr_capacity);
+    values =
+        (json_element_t **)malloc(sizeof(json_element_t *) * curr_capacity);
 
     while (!(token->type == TOKEN_TYPE_ARRAY_END ||
              token->type == TOKEN_TYPE_NONE)) {
@@ -164,6 +165,7 @@ json_element_t *get_json_values(json_token_t **tokens, int tokens_count,
     curr_node = create_node(JSON_TYPE_NULL, NULL, parent_element);
     break;
 
+  // check it
   default:
     printf("num_int: %d \n", num_int);
     printf("default type me: %d \n", token->type);

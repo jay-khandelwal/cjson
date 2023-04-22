@@ -1,4 +1,5 @@
 #include "json_token.h"
+#include "json_parser.h"
 #include "utils.h"
 #include "errors.h"
 #include <ctype.h>
@@ -30,6 +31,8 @@
 json_token_t *tokenize(char *input, int *tokens_count) {
 #ifdef DEBUG
   debug_printf("Debug message \n");
+#endif
+#ifdef LOG_JSON_DATA
   char *string_ptr;
 #endif
 
@@ -422,10 +425,12 @@ int compare_value_from_input(char *input, int counter, char cmp_value[]) {
 }
 
 void print_string_from_input(char *input, int string_len) {
+#ifdef LOG_JSON_DATA
   char string_ptr[string_len + 1];
   strncpy(string_ptr, input, string_len);
   string_ptr[string_len] = '\0';
   puts(string_ptr);
+#endif
 }
 
 container_depth_t *get_new_container_depth(container_t container,
