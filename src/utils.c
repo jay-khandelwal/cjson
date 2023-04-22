@@ -28,6 +28,17 @@ int get_percentage_value(int value, int percentage) {
   return (percentage * value) / 100;
 }
 
+char *num_to_str(int num) {
+  int digits = 0;
+  while (num != 0) {
+    num /= 10;
+    digits++;
+  }
+  char *str = malloc(sizeof(char) * (digits + 1));
+  sprintf(str, "%d", num);
+  return str;
+}
+
 void *clean_json_data(json_element_t *node) {
   json_object_t *object_ptr;
   json_array_t *array_ptr;
@@ -139,7 +150,9 @@ char *get_json_data_in_string(json_element_t *node, char *string) {
 
   case JSON_TYPE_NUMBER:
     num = (int *)(int *)node->value;
-    sprintf(string, "%s%d", string, *num);
+    _string = num_to_str(*num);
+    strcat(string, _string);
+    free(_string);
     break;
 
   case JSON_TYPE_NULL:
