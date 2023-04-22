@@ -47,11 +47,15 @@ int main() {
 
   // json_array_remove(employee_array, 4);
 
-  print_node(node);
-  printf("\n");
+  char *str;
+  str = get_json_data_in_string(node, NULL);
+  puts(str);
 
-  print_node(employee_array);
-  printf("\n");
+  // print_node(node);
+  // printf("\n");
+
+  // print_node(employee_array);
+  // printf("\n");
 
   free(tokens);
   free(buffer);
