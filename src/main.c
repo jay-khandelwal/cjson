@@ -55,5 +55,6 @@ int main() {
 
   free(tokens);
   free(buffer);
+  clean_json_data(node);
   return 0;
 }

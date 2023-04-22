@@ -1,4 +1,5 @@
 #include "json_token.h"
+#include "json_parser.h"
 #include "utils.h"
 #include "errors.h"
 #include <ctype.h>

@@ -25,7 +25,7 @@ typedef struct json_object_t {
 } json_object_t;
 
 typedef struct json_array_t {
-  size_t length;
+  int length;
   json_element_t **values;
 } json_array_t;
 
