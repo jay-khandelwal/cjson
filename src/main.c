@@ -5,20 +5,22 @@
 #include "json_parser.h"
 #include "json_manipulator.h"
 #include "utils.h"
+#include "cjson.h"
 
 int main() {
   char *buffer = read_file("helper/json_files/employee.json");
-  int tokens_count;
+  // int tokens_count;
 
-  json_token_t *tokens = tokenize(buffer, &tokens_count);
+  // json_token_t *tokens = tokenize(buffer, &tokens_count);
 
-  if (tokens == NULL) {
-    perror("Invalid JSON");
-    exit(EXIT_FAILURE);
-  }
+  // if (tokens == NULL) {
+  //   perror("Invalid JSON");
+  //   exit(EXIT_FAILURE);
+  // }
 
   json_element_t *node;
-  node = parser(tokens, tokens_count);
+  // node = parser(tokens, tokens_count);
+  node = parse_json(buffer); // parser(tokens, tokens_count);
 
   // creating new json object & adding key/value
   json_element_t *new_object;
@@ -32,7 +34,7 @@ int main() {
   json_array_append(new_array, new_object);
 
   // modify, adding key/value in json object
-  json_object_add(node, "\"employees\"", json_new_number(10));
+  json_object_add(node, "\"employeees\"", json_new_number(100));
   json_object_add(node, "\"new_string\"",
                   json_new_string("\"jay khandelwal\""));
   // json_object_add(node, "\"new_object\"", new_object);
@@ -57,7 +59,6 @@ int main() {
   // print_node(employee_array);
   // printf("\n");
 
-  free(tokens);
   free(buffer);
   clean_json_data(node);
   return 0;
