@@ -28,18 +28,6 @@ int get_percentage_value(int value, int percentage) {
   return (percentage * value) / 100;
 }
 
-// char *num_to_str(int num) {
-//   int digits = 0;
-//   while (num != 0) {
-//     num /= 10;
-//     digits++;
-//   }
-//   printf("--%d \n", digits);
-//   char *str = malloc(sizeof(char) * (digits + 1));
-//   sprintf(str, "%d", num);
-//   return str;
-// }
-
 char *num_to_str(int num) {
   int copy = num;
   int digits = 0;
