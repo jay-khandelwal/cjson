@@ -26,7 +26,8 @@ int main() {
   printf("state: %s \n", json_to_string(state, NULL));
   printf("zip: %s \n", json_to_string(zip, NULL));
 
-  // add a new key-value pair to the "address" object
+  // add a new key-value pair with JSON boolean as its value to the "address"
+  // object
   json_object_add(address_object, "\"isPrimaryResidence\"",
                   json_new_boolean(1));
 
@@ -38,6 +39,14 @@ int main() {
   // add a new key-value pair with the JSON array as its value to the top-level
   // JSON object
   json_object_add(json_data, "\"hobbies\"", hobbies_array);
+
+  // add a new key-value pair with JSON boolean as its value to the top-level
+  // JSON object
+  json_object_add(json_data, "\"birthYear\"", json_new_number(1985));
+
+  // extract value from the JSON array by index
+  json_element_t *second_hobby = json_array_get(hobbies_array, 1);
+  printf("second_hobby: %s \n", json_to_string(second_hobby, NULL));
 
   // convert the modified JSON data back into a string
   char *new_buffer = json_to_string(json_data, NULL);

@@ -164,7 +164,7 @@ json_element_t *json_array_get(json_element_t *json_array_node, int index) {
   if (index >= json_array->length) {
     debug_printf("Index out of range \n");
   }
-  return json_array->values[index]->value;
+  return json_array->values[index];
 }
 
 void *json_object_remove(json_element_t *json_object_node, char key[]) {
