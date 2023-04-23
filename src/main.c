@@ -8,19 +8,10 @@
 #include "cjson.h"
 
 int main() {
-  char *buffer = read_file("helper/json_files/employee.json");
-  // int tokens_count;
-
-  // json_token_t *tokens = tokenize(buffer, &tokens_count);
-
-  // if (tokens == NULL) {
-  //   perror("Invalid JSON");
-  //   exit(EXIT_FAILURE);
-  // }
+  char *buffer = read_file("helper/json_files/basic.json");
 
   json_element_t *node;
-  // node = parser(tokens, tokens_count);
-  node = parse_json(buffer); // parser(tokens, tokens_count);
+  node = parse_json(buffer);
 
   // creating new json object & adding key/value
   json_element_t *new_object;
@@ -58,6 +49,12 @@ int main() {
 
   // print_node(employee_array);
   // printf("\n");
+
+  FILE *output_fptr;
+
+  output_fptr = fopen("output.json", "w");
+  fputs(str, output_fptr);
+  fclose(output_fptr);
 
   free(buffer);
   clean_json_data(node);
