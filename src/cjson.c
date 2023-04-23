@@ -84,7 +84,7 @@ void *clean_json_data(json_element_t *node) {
   return NULL;
 }
 
-char *get_json_data_in_string(json_element_t *node, char *string) {
+char *json_to_string(json_element_t *node, char *string) {
   json_object_t *object_ptr;
   json_array_t *array_ptr;
   json_property_t *properties_ptr;
@@ -108,7 +108,7 @@ char *get_json_data_in_string(json_element_t *node, char *string) {
       }
       strcat(string, properties_ptr[i].key);
       strcat(string, ": ");
-      get_json_data_in_string(properties_ptr[i].value, string);
+      json_to_string(properties_ptr[i].value, string);
     }
     strcat(string, " }");
     break;
@@ -121,7 +121,7 @@ char *get_json_data_in_string(json_element_t *node, char *string) {
         strcat(string, ", ");
       }
       element = array_ptr->values[i];
-      get_json_data_in_string(element, string);
+      json_to_string(element, string);
     }
     strcat(string, " ]");
     break;
