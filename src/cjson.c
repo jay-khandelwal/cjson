@@ -94,6 +94,7 @@ char *get_json_data_in_string(json_element_t *node, char *string) {
 
   if (string == NULL) {
     string = malloc(sizeof(char) * 10000);
+    strcpy(string, "");
   }
 
   switch (node->type) {
@@ -138,7 +139,7 @@ char *get_json_data_in_string(json_element_t *node, char *string) {
     break;
 
   case JSON_TYPE_NULL:
-    strcat(string, "NULL");
+    strcat(string, "null");
     break;
 
   case JSON_TYPE_TRUE:

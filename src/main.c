@@ -28,8 +28,8 @@ int main() {
   json_object_add(node, "\"employeees\"", json_new_number(100));
   json_object_add(node, "\"new_string\"",
                   json_new_string("\"jay khandelwal\""));
-  // json_object_add(node, "\"new_object\"", new_object);
   json_object_add(node, "\"new_array\"", new_array);
+  // json_object_add(node, "\"new_object\"", new_object);
 
   // Extract value from json object
   json_element_t *employee_array;
