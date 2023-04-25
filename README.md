@@ -148,3 +148,34 @@ int main() {
 }
 ```
 
+## console output
+```
+name: "John Doe" 
+age: 30 
+street: "123 Main St" 
+city: "Anytown" 
+state: "CA" 
+zip: "12345" 
+second_hobby: "traveling" 
+{ "name": "John Doe", "age": 30, "address": { "street": "123 Main St", "city": "Anytown", "state": "CA", "zip": "12345", "isPrimaryResidence": true }, "hobbies": [ "reading", "traveling" ], "birthYear": 1985 }
+```
+
+## modified JSON file output
+```json
+{
+    "name": "John Doe",
+    "age": 30,
+    "address": {
+        "street": "123 Main St",
+        "city": "Anytown",
+        "state": "CA",
+        "zip": "12345",
+        "isPrimaryResidence": true
+    },
+    "hobbies": [
+        "reading",
+        "traveling"
+    ],
+    "birthYear": 1985
+}
+```
