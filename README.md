@@ -122,7 +122,7 @@ int main() {
   // JSON object
   json_object_add(json_data, "\"hobbies\"", hobbies_array);
 
-  // add a new key-value pair with JSON boolean as its value to the top-level
+  // add a new key-value pair with JSON number as its value to the top-level
   // JSON object
   json_object_add(json_data, "\"birthYear\"", json_new_number(1985));
 
