@@ -1,4 +1,4 @@
-#define DEBUG
+// #define DEBUG
 // #define LOG_JSON_DATA
 
 #ifdef DEBUG

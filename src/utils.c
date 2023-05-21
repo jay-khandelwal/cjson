@@ -24,6 +24,14 @@ char *read_file(char *file_name) {
   return buffer;
 }
 
+void write_to_file(char *buffer, char *file_name) {
+  FILE *fp;
+
+  fp = fopen(file_name, "w");
+  fputs(buffer, fp);
+  fclose(fp);
+}
+
 int get_percentage_value(int value, int percentage) {
   return (percentage * value) / 100;
 }

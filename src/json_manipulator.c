@@ -44,15 +44,31 @@ json_element_t *json_new_string(char *string) {
   json_element_t *new_int_node = malloc(sizeof(json_element_t));
   char *str = malloc(sizeof(char) * (strlen(string) + 1));
   strcpy(str, string);
-  str[strlen(string) + 1] = '\0';
+  str[strlen(string)] = '\0';
   new_int_node->type = JSON_TYPE_STRING;
   new_int_node->value = str;
   return new_int_node;
 }
 
-// json_element_t *json_new_boolean(bool boolean){
-
-// }
+json_element_t *json_new_boolean(int num) {
+  char *str;
+  json_element_t *new_boolean_node = malloc(sizeof(json_element_t));
+  if (num > 0) {
+    str = malloc(sizeof(char) * 5);
+    strcpy(str, "true");
+    str[4] = '\0';
+    new_boolean_node->type = JSON_TYPE_TRUE;
+  } else {
+    str = malloc(sizeof(char) * 6);
+    strcpy(str, "false");
+    str[5] = '\0';
+    new_boolean_node->type = JSON_TYPE_FALSE;
+  }
+  new_boolean_node->value = str;
+  // verify if free worth
+  free(str);
+  return new_boolean_node;
+}
 
 void *json_object_add(json_element_t *json_object_node, char key[],
                       json_element_t *value) {
@@ -60,7 +76,7 @@ void *json_object_add(json_element_t *json_object_node, char key[],
   json_property_t new_pair;
 
   new_pair.key = malloc(sizeof(char) * (strlen(key) + 1));
-  new_pair.key[strlen(key) + 1] = '\0';
+  new_pair.key[strlen(key)] = '\0';
   strcpy(new_pair.key, key);
   new_pair.value = value;
 
@@ -135,7 +151,7 @@ json_element_t *json_object_get(json_element_t *json_object_node, char key[]) {
   return NULL;
 }
 
-json_element_t *json_array_get(json_element_t *json_array_node, size_t index) {
+json_element_t *json_array_get(json_element_t *json_array_node, int index) {
   json_array_t *json_array;
 
   if (json_array_node->type != JSON_TYPE_ARRAY) {
@@ -148,7 +164,7 @@ json_element_t *json_array_get(json_element_t *json_array_node, size_t index) {
   if (index >= json_array->length) {
     debug_printf("Index out of range \n");
   }
-  return json_array->values[index]->value;
+  return json_array->values[index];
 }
 
 void *json_object_remove(json_element_t *json_object_node, char key[]) {
@@ -172,7 +188,7 @@ void *json_object_remove(json_element_t *json_object_node, char key[]) {
   return NULL;
 }
 
-void *json_array_remove(json_element_t *json_array_node, size_t index) {
+void *json_array_remove(json_element_t *json_array_node, int index) {
   json_array_t *json_array;
 
   if (json_array_node->type != JSON_TYPE_ARRAY) {

@@ -148,10 +148,13 @@ json_element_t *get_json_values(json_token_t **tokens, int tokens_count,
 
   case TOKEN_TYPE_NUMBER:
     string_length = labs(token->end - token->start);
-    string = malloc(sizeof(char) * string_length);
+    string = malloc(sizeof(char) * (string_length + 1));
     strncpy(string, token->start, string_length);
+    string[string_length] = '\0';
     num = malloc(sizeof(int) * 1);
     *num = atoi(string);
+    // verify if this free is good
+    free(string);
     curr_node = create_node(JSON_TYPE_NUMBER, num, parent_element);
     break;
 
